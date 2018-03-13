@@ -12,4 +12,15 @@ class ContactForm(forms.Form):
 class PurchaseOrderForm(ModelForm):
     class Meta: 
         model = models.OrderDetail
-        fields = ['productName', 'productDescription', 'deliveryAddress','quantity', 'orderDate']
+        fields = ['orderDate', 'CID', 'productName', 'productDescription', 'deliveryAddress','quantity']
+
+    def __init__(self, *args, **kwargs):
+        super(PurchaseOrderForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance:
+            self.fields['orderDate'].widget.attrs['readonly'] = True
+
+class QuoteForm(ModelForm):
+    class Meta: 
+        model = models.Quote
+        fields = ['QLink', 'Qprice', 'Supplier']

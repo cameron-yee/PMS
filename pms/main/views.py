@@ -42,9 +42,12 @@ def email(request):
 @login_required
 def order(request):
     if request.method == "POST":
-        form = PurchaseOrderForm(request.POST)
+        purchase_form = PurchaseOrderForm(request.POST)
+        quote_form = QuoteForm(request.POST)
 
-        if form.is_valid():
+        if purchase_form.is_valid() and quote_form.is_valid():
+            quote_form.save()
+            purchase_form.save()
             user_email = request.user.email
             send_mail(
                 'PURCHASE ORDER CONFIRMATION',
@@ -57,8 +60,9 @@ def order(request):
             return HttpResponseRedirect('/')
             
     else:
-        form = PurchaseOrderForm()
-    return render(request, 'main/order.html', {'form': form})
+        purchase_form = PurchaseOrderForm()
+        quote_form = QuoteForm()
+        return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
 
 
 @login_required
