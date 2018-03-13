@@ -14,13 +14,21 @@ class PurchaseOrderForm(ModelForm):
         model = models.OrderDetail
         fields = ['orderDate', 'CID', 'productName', 'productDescription', 'deliveryAddress','quantity']
 
-    def __init__(self, *args, **kwargs):
-        super(PurchaseOrderForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        if instance:
-            self.fields['orderDate'].widget.attrs['readonly'] = True
 
 class QuoteForm(ModelForm):
-    class Meta: 
+    class Meta:
         model = models.Quote
-        fields = ['QLink', 'Qprice', 'Supplier']
+        fields = ('Supplier', 'QPrice', 'QLink')
+
+
+    # def __init__(self, *args, **kwargs):
+    #     super(PurchaseOrderForm, self).__init__(*args, **kwargs)
+    #     instance = getattr(self, 'instance', None)
+    #     if instance:
+    #         self.fields['orderDate'].widget.attrs['readonly'] = True
+
+# class QuoteForm(ModelForm):
+#     class Meta: 
+#         model = models.Quote
+#         fields = ['QLink', 'Qprice', 'Supplier']
+#         fields = ('CID', 'productName', 'productDescription', 'deliveryAddress', 'quantity', 'orderDate', 'orderDate', 'dateApproved', 'dateReceived')

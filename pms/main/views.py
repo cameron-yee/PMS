@@ -44,25 +44,48 @@ def order(request):
     if request.method == "POST":
         purchase_form = PurchaseOrderForm(request.POST)
         quote_form = QuoteForm(request.POST)
+        price = 0
+        quantity = 0.0
+        saved_quote = 0
+        saved_purchase = 0
 
-        if purchase_form.is_valid() and quote_form.is_valid():
-            quote_form.save()
-            purchase_form.save()
-            user_email = request.user.email
-            send_mail(
-                'PURCHASE ORDER CONFIRMATION',
-                'Hi {}, you\'re purchase order form has been received.\n\nPurchase Management System'.format(request.user.first_name),
-                'yee.camero23@gmail.com',
-                [user_email],
-                fail_silently=False,
-            )
+        if quote_form.is_valid():
+            finished_quote_form = quote_form.save(commit=False)
+            price = quote_form.cleaned_data['QPrice']
+
+            if purchase_form.is_valid():
+                finished_purchase_form = purchase_form.save(commit=False)
+
+                user_email = request.user.email
+                send_mail(
+                    'PURCHASE ORDER CONFIRMATION',
+                    'Hi {}, you\'re purchase order form has been received.\n\nPurchase Management System'.format(request.user.first_name),
+                    'yee.camero23@gmail.com',
+                    [user_email],
+                    fail_silently=False,
+                )
+
+                quantity = purchase_form.cleaned_data['quantity']
+                
+                def calcTotal(price, quantity):
+                    total = price * quantity
+                    return total
+
+                finished_purchase_form.total = calcTotal(price, quantity)
+                finished_purchase_form.EID = request.user
+                # finished_purchase_form.QID = saved_quote
+
+                saved_purchase = finished_purchase_form.save()
+
+            finished_quote_form.OID = finished_purchase_form
+            saved_quote = finished_quote_form.save()
 
             return HttpResponseRedirect('/')
             
     else:
         purchase_form = PurchaseOrderForm()
         quote_form = QuoteForm()
-        return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
+    return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
 
 
 @login_required
