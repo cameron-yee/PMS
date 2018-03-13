@@ -7,7 +7,6 @@ from .forms import *
 from django.contrib.auth.models import User
 from .models import Contract
 
-
 @login_required
 def home(request):
     return render(request, 'main/home.html')
@@ -44,6 +43,8 @@ def order(request):
     if request.method == "POST":
         purchase_form = PurchaseOrderForm(request.POST)
         quote_form = QuoteForm(request.POST)
+        quote_form_2 = QuoteForm(request.POST)
+        quote_form_3 = QuoteForm(request.POST)
         price = 0
         quantity = 0.0
         saved_quote = 0
@@ -60,7 +61,7 @@ def order(request):
                 send_mail(
                     'PURCHASE ORDER CONFIRMATION',
                     'Hi {}, you\'re purchase order form has been received.\n\nPurchase Management System'.format(request.user.first_name),
-                    'yee.camero23@gmail.com',
+                    'yee.camero23@gmail.com', #Make info@system.com email
                     [user_email],
                     fail_silently=False,
                 )
@@ -73,12 +74,22 @@ def order(request):
 
                 finished_purchase_form.total = calcTotal(price, quantity)
                 finished_purchase_form.EID = request.user
-                # finished_purchase_form.QID = saved_quote
 
                 saved_purchase = finished_purchase_form.save()
 
             finished_quote_form.OID = finished_purchase_form
             saved_quote = finished_quote_form.save()
+
+            if finished_purchase_form.total < 50:
+                current_purchase_form = finished_purchase_form 
+                current_quote = finished_quote_form
+
+                def setChosenQuote(current_purchase_form, current_quote):
+                    quote = current_quote
+                    current_purchase_form.QID = quote
+                    current_purchase_form.save()
+
+                setChosenQuote(current_purchase_form, current_quote)
 
             return HttpResponseRedirect('/')
             
@@ -86,7 +97,7 @@ def order(request):
         purchase_form = PurchaseOrderForm()
         quote_form = QuoteForm()
     return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
-
+    
 
 @login_required
 def contract(request):
