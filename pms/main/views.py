@@ -5,8 +5,10 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from .forms import * 
 from django.contrib.auth.models import User
-from .models import Contract, Quote
+from .models import Contract, Quote, OrderDetail
 from datetime import datetime
+
+last_OID = None
 
 @login_required
 def home(request):
@@ -49,7 +51,6 @@ def order(request):
         price = 0
         quantity = 0.0
         saved_quote = 0
-        saved_purchase = 0
 
         if quote_form.is_valid():
             finished_quote_form = quote_form.save(commit=False)
@@ -67,9 +68,10 @@ def order(request):
                 finished_purchase_form.total = calcTotal(price, quantity)
                 finished_purchase_form.EID = request.user
 
-                saved_purchase = finished_purchase_form.save()
+                finished_purchase_form.save()
+                last_OID = finished_purchase_form.OID
 
-                finished_quote_form.OID = finished_purchase_form
+            finished_quote_form.OID = finished_purchase_form
             saved_quote = finished_quote_form.save()
 
             user_email = request.user.email
@@ -94,7 +96,8 @@ def order(request):
                     fail_silently=False,
                 )
             elif finished_purchase_form.total >= 500:
-                return HttpResponseRedirect('/main/quotes')
+                    request.session['selected_order'] = finished_purchase_form.OID
+                    return HttpResponseRedirect('/main/quotes')
             else:
                 send_mail(
                     'PURCHASE ORDER CONFIRMATION',
@@ -113,14 +116,23 @@ def order(request):
 
 @login_required
 def quote(request):
+    selected_order = OrderDetail.objects.get(OID=request.session['selected_order'])
+    #MIGHT NEED TO CLOSE SESSIONS
+
     if request.method == "POST":
         quote_form2 = QuoteForm(request.POST)
         quote_form3 = QuoteForm(request.POST)
 
-        if quote_form.is_valid():
-            quote_form2.save()
-            quote_form3.save()
-           
+        if quote_form2.is_valid():
+            finished_quote_form2 = quote_form2.save(commit=False)
+            finished_quote_form2.OID = selected_order
+            saved_quote2 = finished_quote_form2.save()
+        
+        if quote_form3.is_valid():
+            finished_quote_form3 = quote_form3.save(commit=False)
+            finished_quote_form3.OID = selected_order
+            saved_quote3 = finished_quote_form3.save()
+
         return HttpResponseRedirect('/')
             
     else:
