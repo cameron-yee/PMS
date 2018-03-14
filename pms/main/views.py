@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from .forms import * 
 from django.contrib.auth.models import User
-from .models import Contract
+from .models import Contract, Quote
 from datetime import datetime
 
 @login_required
@@ -69,7 +69,7 @@ def order(request):
 
                 saved_purchase = finished_purchase_form.save()
 
-            finished_quote_form.OID = finished_purchase_form
+                finished_quote_form.OID = finished_purchase_form
             saved_quote = finished_quote_form.save()
 
             user_email = request.user.email
@@ -93,6 +93,8 @@ def order(request):
                     [user_email],
                     fail_silently=False,
                 )
+            elif finished_purchase_form.total >= 500:
+                return HttpResponseRedirect('/main/quotes')
             else:
                 send_mail(
                     'PURCHASE ORDER CONFIRMATION',
@@ -108,6 +110,23 @@ def order(request):
         purchase_form = PurchaseOrderForm()
         quote_form = QuoteForm()
     return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
+
+@login_required
+def quote(request):
+    if request.method == "POST":
+        quote_form2 = QuoteForm(request.POST)
+        quote_form3 = QuoteForm(request.POST)
+
+        if quote_form.is_valid():
+            quote_form2.save()
+            quote_form3.save()
+           
+        return HttpResponseRedirect('/')
+            
+    else:
+        quote_form2 = QuoteForm()
+        quote_form3 = QuoteForm()        
+    return render(request, 'main/quotes.html', {'quote_form2': quote_form2, 'quote_form3': quote_form3})
     
 
 @login_required

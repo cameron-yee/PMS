@@ -20,13 +20,6 @@ class QuoteForm(ModelForm):
         model = models.Quote
         fields = ('Supplier', 'QPrice', 'QLink')
 
-DISPLAY_CHOICES = (
-    ("NO", "no"),
-    ("YES", "yes")
-)
-
-class MyForm(forms.Form):
-    display_type = forms.ChoiceField(widget=forms.RadioSelect, choices=DISPLAY_CHOICES)
 
     # def __init__(self, *args, **kwargs):
     #     super(PurchaseOrderForm, self).__init__(*args, **kwargs)
