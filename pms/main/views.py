@@ -38,12 +38,13 @@ def email(request):
 
     return render(request, 'main/email.html', {'form': form})
 
-
 @login_required
 def order(request):
     if request.method == "POST":
         purchase_form = PurchaseOrderForm(request.POST)
         quote_form = QuoteForm(request.POST)
+        quote_form2 = QuoteForm(request.POST)
+        quote_form3 = QuoteForm(request.POST)
         price = 0
         quantity = 0.0
         saved_quote = 0
@@ -66,7 +67,7 @@ def order(request):
                 )
 
                 quantity = purchase_form.cleaned_data['quantity']
-                
+
                 def calcTotal(price, quantity):
                     total = price * quantity
                     return total
@@ -85,7 +86,9 @@ def order(request):
     else:
         purchase_form = PurchaseOrderForm()
         quote_form = QuoteForm()
-    return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
+        quote_form2 = QuoteForm()
+        quote_form3 = QuoteForm()
+    return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form, 'quote_form2': quote_form2, 'quote_form3': quote_form3})
 
 
 @login_required
