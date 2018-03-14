@@ -38,6 +38,7 @@ def email(request):
 
     return render(request, 'main/email.html', {'form': form})
 
+
 @login_required
 def order(request):
     if request.method == "POST":

@@ -8,13 +8,9 @@
             <div class="col-xs-4">
                 <form id="quote-form" method="POST" action={% url 'order' %}>
                     {% csrf_token %}
-                    {% bootstrap_form quote_form %}                   
+                    {% bootstrap_form quote_form2 %} 
+                    {% bootstrap_form quote_form3 %}                   
                     <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-                </form>
-                <form id="order-form" method="POST" action={% url 'order' %}>
-                        {% csrf_token %}
-                        {% bootstrap_form purchase_form %}
-                        <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div> 

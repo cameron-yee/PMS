@@ -6,15 +6,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-4">
-                <form id="quote-form" method="POST" action={% url 'order' %}>
+                <form id="order-form" method="POST" action={% url 'order' %}>
                     {% csrf_token %}
+                    {% bootstrap_form purchase_form %}
                     {% bootstrap_form quote_form %}                   
                     <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-                </form>
-                <form id="order-form" method="POST" action={% url 'order' %}>
-                        {% csrf_token %}
-                        {% bootstrap_form purchase_form %}
-                        <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div> 
