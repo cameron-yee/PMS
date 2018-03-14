@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import * 
 from django.contrib.auth.models import User
 from .models import Contract
-
+from datetime import datetime
 
 @login_required
 def home(request):
@@ -44,8 +44,8 @@ def order(request):
     if request.method == "POST":
         purchase_form = PurchaseOrderForm(request.POST)
         quote_form = QuoteForm(request.POST)
-        quote_form2 = QuoteForm(request.POST)
-        quote_form3 = QuoteForm(request.POST)
+        quote_form_2 = QuoteForm(request.POST)
+        quote_form_3 = QuoteForm(request.POST)
         price = 0
         quantity = 0.0
         saved_quote = 0
@@ -58,15 +58,6 @@ def order(request):
             if purchase_form.is_valid():
                 finished_purchase_form = purchase_form.save(commit=False)
 
-                user_email = request.user.email
-                send_mail(
-                    'PURCHASE ORDER CONFIRMATION',
-                    'Hi {}, you\'re purchase order form has been received.\n\nPurchase Management System'.format(request.user.first_name),
-                    'yee.camero23@gmail.com',
-                    [user_email],
-                    fail_silently=False,
-                )
-
                 quantity = purchase_form.cleaned_data['quantity']
 
                 def calcTotal(price, quantity):
@@ -75,22 +66,49 @@ def order(request):
 
                 finished_purchase_form.total = calcTotal(price, quantity)
                 finished_purchase_form.EID = request.user
-                # finished_purchase_form.QID = saved_quote
 
                 saved_purchase = finished_purchase_form.save()
 
             finished_quote_form.OID = finished_purchase_form
             saved_quote = finished_quote_form.save()
 
+            user_email = request.user.email
+
+            if finished_purchase_form.total < 50:
+                current_purchase_form = finished_purchase_form 
+                current_quote = finished_quote_form
+
+                def setChosenQuote(current_purchase_form, current_quote):
+                    quote = current_quote
+                    current_purchase_form.QID = quote
+                    current_purchase_form.dateApproved = datetime.now()
+                    current_purchase_form.save()
+
+                setChosenQuote(current_purchase_form, current_quote)
+
+                send_mail(
+                    'PURCHASE ORDER CONFIRMATION',
+                    'Hi {}, you\'re purchase order form has been received.  The order form has been approved with the given quote.\n\nPurchase Management System'.format(request.user.first_name),
+                    'yee.camero23@gmail.com', #Make info@system.com email
+                    [user_email],
+                    fail_silently=False,
+                )
+            else:
+                send_mail(
+                    'PURCHASE ORDER CONFIRMATION',
+                    'Hi {}, you\'re purchase order form has been received.\n\nPurchase Management System'.format(request.user.first_name),
+                    'yee.camero23@gmail.com', #Make info@system.com email
+                    [user_email],
+                    fail_silently=False,
+                )
+
             return HttpResponseRedirect('/')
             
     else:
         purchase_form = PurchaseOrderForm()
         quote_form = QuoteForm()
-        quote_form2 = QuoteForm()
-        quote_form3 = QuoteForm()
-    return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form, 'quote_form2': quote_form2, 'quote_form3': quote_form3})
-
+    return render(request, 'main/order.html', {'purchase_form': purchase_form, 'quote_form': quote_form})
+    
 
 @login_required
 def contract(request):
