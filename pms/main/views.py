@@ -151,4 +151,11 @@ def quote(request):
 @login_required
 def contract(request):
     contracts = Contract.objects.all()
-    return render(request, 'main/contract.html')
+    return render(request, 'main/contract.html', {'contracts': contracts})
+
+
+@login_required
+def myorders(request):
+    user_id = request.user.id
+    myorders = OrderDetail.objects.all() #filter(EID=user_id)
+    return render(request, 'main/myorders.html', {'myorders': myorders})
