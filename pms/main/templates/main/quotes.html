@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <form id="quotes-form" method="POST" action={% url 'quotes' %}>
+                    {% csrf_token %}
+                    <h3>Quote 2</h3>
+                    {% bootstrap_form quote_form2 %} 
+                    <h2>Quote 3</h2>
+                    {% bootstrap_form quote_form3 %} 
+                    <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div> 
+    </div>
+{% endblock content %}
