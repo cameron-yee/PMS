@@ -48,8 +48,6 @@ def order(request):
         quote_form_3 = QuoteForm(request.POST)
         price = 0
         quantity = 0.0
-        saved_quote = 0
-        saved_purchase = 0
 
         if quote_form.is_valid():
             finished_quote_form = quote_form.save(commit=False)
@@ -67,10 +65,10 @@ def order(request):
                 finished_purchase_form.total = calcTotal(price, quantity)
                 finished_purchase_form.EID = request.user
 
-                saved_purchase = finished_purchase_form.save()
+                finished_purchase_form.save()
 
             finished_quote_form.OID = finished_purchase_form
-            saved_quote = finished_quote_form.save()
+            finished_quote_form.save()
 
             user_email = request.user.email
 
