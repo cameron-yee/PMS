@@ -5,7 +5,7 @@ class ContractAdmin(admin.ModelAdmin):
     list_display = ['CName', 'CBudget', 'CStart', 'CEnd']
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['CID', 'EID', 'productName', 'total', 'orderDate']
+    list_display = ['EID', 'CID', 'productName', 'total', 'orderDate']
 
 class QuoteAdmin(admin.ModelAdmin):
     list_display = ['OID', 'QPrice', 'Supplier']

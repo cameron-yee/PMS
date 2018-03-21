@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#uiby*ma-#1)ww84sdke!ov!&jh3fvsenvl)nvkceosju$o%(+'
+SECRET_KEY = os.environ.get('SECRET_KEY', '') #'#uiby*ma-#1)ww84sdke!ov!&jh3fvsenvl)nvkceosju$o%(+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,8 +30,8 @@ ALLOWED_HOSTS = [
 ]
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'yee.camero23@gmail.com'
-EMAIL_HOST_PASSWORD = 'tyrone11'
+EMAIL_HOST_USER = os.environ.get('EMAIL_USERNAME', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS', '')
 EMAIL_PORT = 587
 #encrypts email
 EMAIL_USE_TLS = True
@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'pms.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pms',                      
+        'NAME': os.environ.get('DB_NAME', ''),                      
         #Set user and password for your postgres pms user
-        'USER': 'cyee',
-        'PASSWORD': 'bigHouse8063!',
+        'USER': os.environ.get('DB_USERNAME', ''),
+        'PASSWORD': os.environ.get('DB_PASS', ''),
         'HOST': 'localhost',
         'PORT': '',
     }

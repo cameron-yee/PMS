@@ -157,5 +157,5 @@ def contract(request):
 @login_required
 def myorders(request):
     user_id = request.user.id
-    myorders = OrderDetail.objects.all() #filter(EID=user_id)
+    myorders = OrderDetail.objects.filter(EID=user_id)
     return render(request, 'main/myorders.html', {'myorders': myorders})

@@ -12,7 +12,7 @@
                             <div class="col-2" style="border: 1px solid white;">Description</div>
                             <div class="col-2" style="border: 1px solid white;">Quantity</div>
                             <div class="col-2" style="border: 1px solid white;">Total Cost</div>
-                            <div class="col-2"></div>
+                            <div class="col-2" style="border: 1px solid white;">Date Approved</div>
                         </div>
                     {% for order in myorders %}
                         <div class="row">
@@ -21,7 +21,7 @@
                             <div class="col-2" style="border: 1px solid white;">{{ order.productDescription }}</div>
                             <div class="col-2" style="border: 1px solid white;">{{ order.quantity }}</div>
                             <div class="col-2" style="border: 1px solid white;">{{ order.total }}</div>
-                            <div class="col-2"></div>
+                            <div class="col-2" style="border: 1px solid white;">{{ order.dateApproved }}</div>
                         </div>
                     {% endfor %}
                 </div>
