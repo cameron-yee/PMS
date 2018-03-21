@@ -1,8 +1,15 @@
 from django.contrib import admin
 from .models import OrderDetail, Contract, Quote
 
-class TaskAdmin(admin.ModelAdmin):
+class ContractAdmin(admin.ModelAdmin):
     list_display = ['CName', 'CBudget', 'CStart', 'CEnd']
-admin.site.register(OrderDetail)
-admin.site.register(Contract, TaskAdmin)
-admin.site.register(Quote)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['CID', 'EID', 'productName', 'total', 'orderDate']
+
+class QuoteAdmin(admin.ModelAdmin):
+    list_display = ['OID', 'QPrice', 'Supplier']
+
+admin.site.register(OrderDetail, OrderAdmin)
+admin.site.register(Contract, ContractAdmin)
+admin.site.register(Quote, QuoteAdmin)
