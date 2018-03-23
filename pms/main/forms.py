@@ -21,9 +21,11 @@ class PurchaseOrderForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PurchaseOrderForm, self).__init__(*args, **kwargs)
+        self.fields['CID'].label = 'Contract'
         instance = getattr(self, 'instance', None)
         if instance:
             self.fields['orderDate'].widget.attrs['readonly'] = True
+            
             
 class QuoteForm(ModelForm):
     class Meta:

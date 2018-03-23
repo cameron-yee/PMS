@@ -7,6 +7,7 @@ from .forms import *
 from django.contrib.auth.models import User
 from .models import Contract, Quote, OrderDetail
 from datetime import datetime
+import os
 
 last_OID = None
 
@@ -128,19 +129,19 @@ def quote(request):
             finished_quote_form2.OID = selected_order
             saved_quote2 = finished_quote_form2.save()
         
-        if quote_form3.is_valid():
-            finished_quote_form3 = quote_form3.save(commit=False)
-            finished_quote_form3.OID = selected_order
-            saved_quote3 = finished_quote_form3.save()
+            if quote_form3.is_valid():
+                finished_quote_form3 = quote_form3.save(commit=False)
+                finished_quote_form3.OID = selected_order
+                saved_quote3 = finished_quote_form3.save()
 
-            send_mail(
-                'PURCHASE ORDER CONFIRMATION',
-                'Hi {}, you\'re purchase order form has been received. Since the order is over $500, it may take longer to review. Management will get back to you after reviewing the provided quotes.\n\nPurchase Management System'.format(request.user.first_name),
-                'yee.camero23@gmail.com', #Make info@system.com email
-                [user_email],
-                fail_silently=False,
-            )
-        return HttpResponseRedirect('/')
+                send_mail(
+                    'PURCHASE ORDER CONFIRMATION',
+                    'Hi {}, you\'re purchase order form has been received. Since the order is over $500, it may take longer to review. Management will get back to you after reviewing the provided quotes.\n\nPurchase Management System'.format(request.user.first_name),
+                    'yee.camero23@gmail.com', #Make info@system.com email
+                    [user_email],
+                    fail_silently=False,
+                )
+            return HttpResponseRedirect('/')
             
     else:
         quote_form2 = QuoteForm()
@@ -158,4 +159,9 @@ def contract(request):
 def myorders(request):
     user_id = request.user.id
     myorders = OrderDetail.objects.filter(EID=user_id)
-    return render(request, 'main/myorders.html', {'myorders': myorders})
+    #order_ids = [OrderDetail.OID for item in myorders]
+    #myquotes = Quote.objects.filter(OID=[OrderDetail.OID for item in myorders])
+    #might need to add EID to each quote unless Cameron can get the query working
+    myquotes = Quote.objects.all()
+
+    return render(request, 'main/myorders.html', {'myorders': myorders, 'myquotes': myquotes})

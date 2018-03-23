@@ -4,19 +4,42 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col-xs-4">
                 <form id="order-form" method="POST" action={% url 'order' %}>
                     {% csrf_token %}
-                    {% bootstrap_form purchase_form %}
-                    {% bootstrap_form quote_form %}
+                    <div class="row">
+                        <div class="col-lg-2">
+                                {% bootstrap_field purchase_form.orderDate %} 
+                        </div>
+                        <div class="col-lg-2">
+                                {% bootstrap_field purchase_form.productName %}
+                                {% bootstrap_field quote_form.QPrice %}
+                                {% bootstrap_field purchase_form.productDescription %}
+                                {% bootstrap_field purchase_form.quantity %}   
+                        </div>
+                        <div class="col-lg-3">
+                                {% bootstrap_field purchase_form.CID %}
+                                {% bootstrap_field quote_form.Supplier %}                       
+                                {% bootstrap_field quote_form.QLink %}
+                        </div>
+                        <div class="col-lg-3">
+                                {% bootstrap_field purchase_form.addressLine1 %}
+                                {% bootstrap_field purchase_form.addressLine2 %}
+                        </div>
+                        <div class="col-lg-2">
+                                {% bootstrap_field purchase_form.city %}
+                                {% bootstrap_field purchase_form.state %}
+                                {% bootstrap_field purchase_form.zipCode %}
+                                <br><br>
+                                <button type="reset" value="Clear" class="btn btn-primary">Reset</button>
+                                <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    <!--{% bootstrap_form purchase_form %}
+                    {% bootstrap_form quote_form %}-->
                     <!-- {% if total > 500 %}
                         {% bootstrap_form quote_form_2 %}
                         {% bootstrap_form quote_form_3 %}
                     {% endif %} -->
-                    <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
                 </form>
-            </div>
-        </div> 
     </div>
 {% endblock content %}

@@ -7,8 +7,8 @@ from django.conf import settings
 class Quote(models.Model):
     QID = models.AutoField(primary_key=True, verbose_name= 'quote ID')
     OID = models.ForeignKey('OrderDetail', on_delete=models.CASCADE, related_name='+', verbose_name= 'order ID')
-    QLink = models.TextField(max_length=1000, verbose_name= 'link')
-    QPrice = models.FloatField(verbose_name= 'price')
+    QLink = models.CharField(max_length=1000, verbose_name= 'website Link')
+    QPrice = models.FloatField(verbose_name= 'item Price')
     Supplier = models.CharField(max_length=30)
 
 class Contract(models.Model):
@@ -21,10 +21,10 @@ class Contract(models.Model):
 class OrderDetail(models.Model):
     OID = models.AutoField(primary_key=True, verbose_name = 'order ID')
     EID = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, verbose_name = 'employee ID')
-    CID = models.ForeignKey(Contract, on_delete=models.CASCADE, verbose_name = 'Contract ID')
+    CID = models.ForeignKey(Contract, on_delete=models.CASCADE)
     #null allows blank entry to be stored as null, blank allows the form to be saved without QID
     QID = models.ForeignKey(Quote, on_delete=models.CASCADE, null=True, blank=True, verbose_name= 'quoteID')
-    productName = models.CharField(max_length=25, verbose_name= 'product Name')
+    productName = models.CharField(max_length=25, verbose_name= 'item Name')
     productDescription = models.CharField(max_length=200, verbose_name= 'description')
     addressLine1 = models.CharField(max_length=40)
     addressLine2 = models.CharField(max_length=40, null=True, blank=True)
