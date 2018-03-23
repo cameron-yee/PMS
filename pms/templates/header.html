@@ -25,6 +25,12 @@
         <li class="nav-item">
           <a class="nav-link" href="http://127.0.0.1:8000/main/myorders">My Orders</a>
         </li>
+        {% if user.is_superuser %}
+        <li class="nav-item">
+            <a class="nav-link" href="http://127.0.0.1:8000/main/allorders">All Orders</a>
+          </li>
+        {% endif %}
+
       </ul>
       <!--<div>
         <button id="logout" class="btn btn-warning"><a href="/logout">Sign Out</a></button>

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+                <div class="container">
+                    <h1>My Order Requests</h1>
+                        <div class="row">
+                            <div class="col-1" style="border: 1px solid white;">Order ID</div>
+                            <div class="col-1" style="border: 1px solid white;">Product Name</div>
+                            <div class="col-2" style="border: 1px solid white;">Description</div>
+                            <div class="col-1" style="border: 1px solid white;">Quantity</div>
+                            <div class="col-1" style="border: 1px solid white;">Total Cost</div>
+                            <div class="col-1" style="border: 1px solid white;">Date Ordered</div>
+                            <div class="col-1" style="border: 1px solid white;">Date Approved</div>
+                            <div class="col-1" style="border: 1px solid white;">Date Received</div>
+                            <div class="col-1" style="border: 1px solid white;">Contract ID</div>
+                            <div class="col-1" style="border: 1px solid white;">Employee</div>
+                            <div class="col-1" style="border: 1px solid white;">Pending</div>
+                        </div>
+                    {% for order in allorders %}
+                        <div class="row">
+                            <div class="col-1" style="border: 1px solid white;">{{ order.OID }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.productName }}</div>
+                            <div class="col-2" style="border: 1px solid white;">{{ order.productDescription }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.quantity }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.total }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.orderDate }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.dateApproved }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.dateReceived }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.CID }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.EID }}</div>
+                            <div class="col-1" style="border: 1px solid white;">{{ order.isPending }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div> 
+    </div>
+{% endblock content %}

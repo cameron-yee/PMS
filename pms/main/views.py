@@ -165,3 +165,12 @@ def myorders(request):
     myquotes = Quote.objects.all()
 
     return render(request, 'main/myorders.html', {'myorders': myorders, 'myquotes': myquotes})
+
+@login_required
+def allorders(request):
+    allorders = OrderDetail.objects.all()
+    #order_ids = [OrderDetail.OID for item in myorders]
+    #myquotes = Quote.objects.filter(OID=[OrderDetail.OID for item in myorders])
+    #might need to add EID to each quote unless Cameron can get the query working
+
+    return render(request, 'main/allorders.html', {'allorders': allorders})

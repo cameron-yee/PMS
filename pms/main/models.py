@@ -1,6 +1,8 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+
 
 # Create your models here.
 
@@ -10,6 +12,8 @@ class Quote(models.Model):
     QLink = models.CharField(max_length=1000, verbose_name= 'website Link')
     QPrice = models.FloatField(verbose_name= 'item Price')
     Supplier = models.CharField(max_length=30)
+    def __str__(self):
+        return 'QID: {} {}'.format(self.OID, self.Supplier)
 
 class Contract(models.Model):
     CID = models.AutoField(primary_key=True, verbose_name= 'contract ID')
@@ -17,6 +21,8 @@ class Contract(models.Model):
     CBudget = models.IntegerField(verbose_name= 'budget')
     CStart = models.DateField(verbose_name= 'contract Start Date')
     CEnd = models.DateField(null=True, verbose_name= 'contract End Date')
+    def __str__(self):
+        return '{}'.format(self.CName)
 
 class OrderDetail(models.Model):
     OID = models.AutoField(primary_key=True, verbose_name = 'order ID')
@@ -36,3 +42,8 @@ class OrderDetail(models.Model):
     orderDate = models.DateField(default=timezone.now, verbose_name= 'date Requested')
     dateApproved = models.DateField(null=True, blank=True, verbose_name= 'date Approved')
     dateReceived = models.DateField(null=True, blank=True, verbose_name= 'date Received')
+    isPending = models.BooleanField(default=True, verbose_name= 'Pending')
+    isDenied = models.BooleanField(default=False, verbose_name= 'Denied')
+    isApproved = models.BooleanField(default=False, verbose_name= 'Approved')
+    def __str__(self):
+        return '{}'.format(self.OID)

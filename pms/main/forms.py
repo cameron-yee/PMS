@@ -9,6 +9,7 @@ class ContactForm(forms.Form):
     sender = forms.EmailField()
     cc_myself = forms.BooleanField(required=False)
 
+
 class MyModelChoiceField(forms.ModelChoiceField): #gets the Contract name for the ChoiceFields in the form
     def label_from_instance(self, obj):
         return obj.CName
@@ -25,9 +26,13 @@ class PurchaseOrderForm(ModelForm):
         instance = getattr(self, 'instance', None)
         if instance:
             self.fields['orderDate'].widget.attrs['readonly'] = True
+
+    def __unicode__(self):
+        return self.fields['productName']
             
             
 class QuoteForm(ModelForm):
     class Meta:
         model = models.Quote
         fields = ('Supplier', 'QPrice', 'QLink')
+
