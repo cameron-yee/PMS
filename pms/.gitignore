@@ -1,0 +1,11 @@
+venv/
+
+.DS_Store
+
+Notes.txt
+
+vs.py
+
+*.pyc
+
+pms/main/migrations/

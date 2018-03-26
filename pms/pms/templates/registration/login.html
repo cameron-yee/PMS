@@ -4,12 +4,9 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-  <form method="post" align='center'>
+  <h2>Login</h2>
+  <form method="post">
     {% csrf_token %}
-    <div>
-        <img src="AM.png" alt="My image"/>
-      </div>
-    <h2>Login</h2>
     {{ form.as_p }}
     <button class="btn btn-primary" type="submit">Login</button>
   </form>
